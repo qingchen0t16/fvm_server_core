@@ -1,0 +1,188 @@
+﻿<Window x:Class="FVMServerCore.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FVMServerCore"
+        mc:Ignorable="d"
+        Title="FVM Server Core Console GUI" Height="600" Width="950" ResizeMode="NoResize" WindowStyle="None" >
+    <Window.Background>
+        <ImageBrush ImageSource="/bg.jpg" AlignmentX="Left" AlignmentY="Top" TileMode="Tile" Stretch="None" Viewport="0,0,0.1,0.1"></ImageBrush>
+    </Window.Background>
+    <Window.Resources>
+
+        <Storyboard x:Key="LeftList_MouseEnter">
+            <ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" From="#00FFFFFF" To="#FF98C2DC" Duration="0:0:0.2" />
+            <ColorAnimation Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" From="#FF1258B4" To="#FFFFFFFF" Duration="0:0:0.2" />
+        </Storyboard>
+        <Storyboard x:Key="LeftList_Selected">
+            <ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#FF115AB5" Duration="0:0:0.2" />
+            <ColorAnimation Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" To="#FFE6FBFE" Duration="0:0:0.2" />
+        </Storyboard>
+        <Storyboard x:Key="LeftList_MouseLeave">
+            <ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#00FFFFFF" Duration="0:0:0.2" />
+            <ColorAnimation Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" To="#FF1258B4" Duration="0:0:0.2" />
+        </Storyboard>
+        <Style x:Key="FileListBoxItem" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd" SnapsToDevicePixels="true" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" x:Name="contentPresenter"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter Property="Background" Value="#00FFFF00"/>
+                                <Setter Property="Foreground" Value="#FF1258B4"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#FF5F98BB"/>
+                                <Setter Property="Foreground" Value="#FFE6FBFE"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="Selector.IsSelectionActive" Value="false"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="#FF5F98BB"/>
+                                <Setter Property="Foreground" Value="#FFE6FBFE"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Background" Value="#66FFFFFF" />
+            <Setter Property="BorderBrush" Value="#00FF"/>
+            <Setter Property="Margin" Value="0,0,0,0"/>
+            <Setter Property="Height" Value="32"/>
+        </Style>
+        <Style TargetType="ListViewItem">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Background" Value="#19FFFFFF"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#FF1A6280"/>
+        </Style>
+    </Window.Resources>
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid VerticalAlignment="Top" Height="32" Background="#CCFFFFFF" MouseDown="Grid_MouseDown">
+            <Label Content="FVL Server GUI 0.0.1" VerticalContentAlignment="Center"/>
+            <Button x:Name="BtnClose" HorizontalAlignment="Right" Width="32" Background="White" Click="BtnClose_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="_Grid">
+                            <Grid x:Name="Uc_Grid" VerticalAlignment="Center" Height="25" Width="25" Background="#00000000">
+                                <Path x:Name="Uc_Path1" Stroke="#FF78A1D4" StrokeThickness="2" Data="M0,0 L10,10" VerticalAlignment="Center" HorizontalAlignment="Center"></Path>
+                                <Path x:Name="Uc_Path2" Stroke="#FF78A1D4" StrokeThickness="2" Data="M10,0 L0,10" VerticalAlignment="Center" HorizontalAlignment="Center"></Path>
+                                <Grid.RenderTransform>
+                                    <RotateTransform x:Name="Uc_Transform" Angle="0" CenterY="12.5" CenterX="12.5"></RotateTransform>
+                                </Grid.RenderTransform>
+                            </Grid>
+                            <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}"></ContentPresenter>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Uc_Path1" Property="Data" Value="M0,0 L14,14"></Setter>
+                                <Setter TargetName="Uc_Path2" Property="Data" Value="M14,0 L0,14"></Setter>
+                                <Setter TargetName="_Grid" Property="Background" Value="#FFD6E1E8"></Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Uc_Path1" Property="Data" Value="M0,0 L12,12"></Setter>
+                                <Setter TargetName="Uc_Path2" Property="Data" Value="M12,0 L0,12"></Setter>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button x:Name="BtnMinimize" HorizontalAlignment="Right" Width="32" Background="White" Margin="0,0,32,0" Click="BtnMinimize_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="_Grid">
+                            <Grid x:Name="Uc_Grid" VerticalAlignment="Center" Height="25" Width="25" Background="#00000000">
+                                <Path x:Name="Uc_Path1" Stroke="#FF78A1D4" StrokeThickness="2" Data="M10,0 L0,0" VerticalAlignment="Center" HorizontalAlignment="Center"></Path>
+                                <Grid.RenderTransform>
+                                    <RotateTransform x:Name="Uc_Transform" Angle="0" CenterY="12.5" CenterX="12.5"></RotateTransform>
+                                </Grid.RenderTransform>
+                            </Grid>
+                            <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}"></ContentPresenter>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Uc_Path1" Property="Data" Value="M14,0 L0,0"></Setter>
+                                <Setter TargetName="_Grid" Property="Background" Value="#FFD6E1E8"></Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Uc_Path1" Property="Data" Value="M12,0 L0,0"></Setter>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+        <ListBox Name="LeftList" Width="200" HorizontalAlignment="Left" BorderThickness="0,0,0,0" VerticalAlignment="Stretch" Margin="0,32,0,0" Background="#7FFFFFFF" FontSize="14">
+        </ListBox>
+        <TabControl Name="RightTabControl" Margin="200,30,0,0" BorderBrush="{x:Null}" Background="#33FFFFFF" TabStripPlacement="Bottom" TabIndex="1">
+            <TabItem Visibility="Hidden" VerticalAlignment="Top" Margin="0,0,0,0">
+                <Grid VerticalAlignment="Stretch" Margin="-3,-1,-3,-9">
+                    <RichTextBox Name="Console_Out" VerticalAlignment="Stretch" Background="#19FFFFFF" BorderThickness="0,0,0,0" AcceptsReturn="True" Margin="0,1,0,33" VerticalScrollBarVisibility="Auto" IsReadOnly="True"/>
+                    <Label Name="Console_Associate" Content="1234" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Height="32" Padding="2,5,5,5"/>
+                    <TextBox Name="Console_In" VerticalAlignment="Bottom" Background="#99FFFFFF" BorderThickness="0,0,0,0" Height="32" VerticalContentAlignment="Center" KeyDown="Console_In_KeyDown" TextChanged="Console_In_TextChanged" />
+                </Grid>
+            </TabItem>
+            <TabItem Visibility="Hidden">
+                <ListView Name="UserList" Margin="0,2,0,-6" Background="#66FFFFFF" BorderBrush="{x:Null}" Foreground="Black" BorderThickness="0,0,0,0" Padding="0,0,1,0" ItemsSource="{Binding}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="IP" Width="150" DisplayMemberBinding="{Binding Path=Ip}"></GridViewColumn>
+                            <GridViewColumn Header="Port" Width="100" DisplayMemberBinding="{Binding Path=Port}"></GridViewColumn>
+                            <GridViewColumn Header="Account" Width="150" DisplayMemberBinding="{Binding Path=Account}"></GridViewColumn>
+                            <GridViewColumn Header="Login Time" Width="200" DisplayMemberBinding="{Binding Path=LoginTime}"></GridViewColumn>
+                            <GridViewColumn Header="UserID" Width="140" DisplayMemberBinding="{Binding Path=UserID}"></GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+            <TabItem Visibility="Hidden">
+                12345
+            </TabItem>
+            <TabItem Visibility="Hidden" Margin="-2,0,-2,-2">
+                <Grid VerticalAlignment="Stretch">
+                    <Grid VerticalAlignment="Top" Height="45" Background="#33FFFFFF">
+                        <Label Content="发送方:" HorizontalAlignment="Left" Width="100" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <Label Content="Admin" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Width="752" Margin="100,0,0,0" Foreground="#FF303030"/>
+                        <TextBox Margin="100,0,0,0" Background="#99FFFFFF" BorderThickness="0,0,0,0"  VerticalContentAlignment="Center" Text="" Padding="3,0,0,0" />
+                    </Grid>
+                    <Grid VerticalAlignment="Top" Height="45" Background="#33FFFFFF" Margin="0,45,0,0">
+                        <Label Content="接收方:" HorizontalAlignment="Left" Width="100" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <Label Content="所有玩家" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Width="752" Margin="100,0,0,0" Foreground="#FF303030"/>
+                        <TextBox Margin="100,0,0,0" Background="#99FFFFFF" BorderThickness="0,0,0,0"  VerticalContentAlignment="Center" Text="" Padding="3,0,0,0" />
+                    </Grid>
+                    <Grid VerticalAlignment="Top" Height="45" Background="#33FFFFFF" Margin="0,90,0,0">
+                        <Label Content="邮件标题:" HorizontalAlignment="Left" Width="100" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <TextBox Margin="100,0,0,0" Background="#99FFFFFF" BorderThickness="0,0,0,0"  VerticalContentAlignment="Center" Padding="3,0,0,0" Text="FVM 公告" />
+                    </Grid>
+                    <Grid VerticalAlignment="Top" Height="45" Background="#33FFFFFF" Margin="0,135,0,0">
+                        <Label Content="邮件奖励:" HorizontalAlignment="Left" Width="100" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <TextBox Margin="100,0,0,0" Background="#99FFFFFF" BorderThickness="0,0,0,0"  VerticalContentAlignment="Center" Padding="3,0,0,0" Text="" />
+                    </Grid>
+                    <Grid VerticalAlignment="Stretch" Background="#33FFFFFF" Margin="0,180,0,45" Height="417.8">
+                        <Label Content="内容:" HorizontalAlignment="Left" Width="100" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top"></Label>
+                        <TextBox Margin="100,0,0,0" Background="#99FFFFFF" BorderThickness="0,0,0,0"  VerticalContentAlignment="Top" Padding="3,0,0,0" Text="FVM 公告" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" AcceptsReturn="True" />
+                    </Grid>
+                    <Grid VerticalAlignment="Bottom" Height="45" Margin="0,0,0,0">
+                        <Button Background="#66FFFFFF" BorderBrush="{x:Null}" Content="发送" Click="Button_Click" />
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+
+
+</Window>
