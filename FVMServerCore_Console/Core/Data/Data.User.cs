@@ -1,4 +1,4 @@
-﻿using FVMIO_From_Standard2._0.Model;
+﻿using FVMIO_From_Standard2_0.Model;
 using System.Data;
 
 namespace FVMServerCore_Console.Core.Data
@@ -66,8 +66,8 @@ namespace FVMServerCore_Console.Core.Data
                         Account = dr[1].ToString(),
                         UserName = dr[2].ToString(),
                         Level = new UserLevel {
-                            Level = Convert.ToInt32(dr[5]),
-                            Exp = Convert.ToInt64(dr[6])
+                            Level = Convert.ToInt32(dr[4]),
+                            Exp = Convert.ToInt64(dr[5]),
                 }, 
                         Sex = dr[3].ToString(),
                         Money = new UserMoneyData
@@ -77,7 +77,8 @@ namespace FVMServerCore_Console.Core.Data
                             GB = Convert.ToInt64(dr[8])
                         }
                     };
-                    userData.Level.NeedExp = (long)Math.Round((userData.Level.Level * 100.99F + (userData.Level.Level - 1) * 1024) * Convert.ToDouble(FVMCore.Instance.Settings.play.player_main_exp_difficulty));
+                    userData.Level.NeedExp = (long)Math.Round(userData.Level.Level * userData.Level.Level * 100.99F * Convert.ToDouble(FVMCore.Instance.Settings.play.player_main_exp_difficulty));
+                    Debug.Instance.Log(userData.Level.NeedExp.ToString());
                     return userData;
                 }
                 else

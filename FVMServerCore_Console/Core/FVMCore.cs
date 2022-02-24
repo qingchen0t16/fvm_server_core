@@ -1,5 +1,5 @@
-﻿using FVMIO_From_Standard2._0.Enum;
-using FVMIO_From_Standard2._0.Model;
+﻿using FVMIO_From_Standard2_0.Enum;
+using FVMIO_From_Standard2_0.Model;
 using FVMServerCore_Console.Models;
 using System.Net;
 using System.Net.Sockets;

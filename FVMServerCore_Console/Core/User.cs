@@ -1,7 +1,7 @@
-﻿using FVMIO_From_Standard2._0.API;
-using FVMIO_From_Standard2._0.Enum;
-using FVMIO_From_Standard2._0.Model;
-using FVMIO_From_Standard2._0.Package;
+﻿using FVMIO_From_Standard2_0.API;
+using FVMIO_From_Standard2_0.Enum;
+using FVMIO_From_Standard2_0.Model;
+using FVMIO_From_Standard2_0.Package;
 using FVMServerCore_Console.Core.Data;
 using System;
 using System.Collections.Generic;

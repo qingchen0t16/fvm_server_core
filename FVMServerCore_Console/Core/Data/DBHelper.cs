@@ -26,9 +26,7 @@ namespace FVMServerCore_Console.Core.Data
             try
             {
                 connList.Add(dbName, new MySqlConnection($"server={FVMCore.Instance.Settings.db.mysql_ip};port={FVMCore.Instance.Settings.db.mysql_port};user={FVMCore.Instance.Settings.db.mysql_user};password={FVMCore.Instance.Settings.db.mysql_pwd};database={FVMCore.Instance.Settings.db.db_name};Charset={FVMCore.Instance.Settings.db.mysql_charset};"));
-                Debug.Instance.Log("连接成功,尝试打开:" + $"server={FVMCore.Instance.Settings.db.mysql_ip};port={FVMCore.Instance.Settings.db.mysql_port};user={FVMCore.Instance.Settings.db.mysql_user};password={FVMCore.Instance.Settings.db.mysql_pwd};database={FVMCore.Instance.Settings.db.db_name};Charset={FVMCore.Instance.Settings.db.mysql_charset};");
-                connList[dbName].Open();
-                Debug.Instance.Log("数据库打开成功");
+                Debug.Instance.Log("连接成功");
             }
             catch (Exception ex)
             {
