@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\fvm.-projectio\FVMIO\FVMIO\FVMIO.csproj" />
+    <ProjectReference Include="..\..\fvm_projectio_standard2.0\FVMIO From Standard2.0\FVMIO From Standard2.0.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,7 @@
-﻿using FVMIO.API;
-using FVMIO.Enum;
-using FVMIO.Model;
-using FVMIO.Package;
+﻿using FVMIO_From_Standard2._0.API;
+using FVMIO_From_Standard2._0.Enum;
+using FVMIO_From_Standard2._0.Model;
+using FVMIO_From_Standard2._0.Package;
 using FVMServerCore_Console.Core.Data;
 using System;
 using System.Collections.Generic;
@@ -47,7 +47,7 @@ namespace FVMServerCore_Console.Core
                     if (sp.Header == "GetUserData") // 获取User基础数据
                     {
                         Debug.Instance.Client_Log($"{Account ?? IP + ":" + Port}", $"[SourceID:{sp.SourceID}]{sp.Header} > 获取用户数据");
-                        Respones.Send(sp.RequestSocket, SendType.Reply, FVMData.GetUserData(Convert.ToInt32(sp.GetSource<string>())) ?? new UserData { UserID = -1 }, "Null", sp.SourceID);
+                        Respones.Send<UserData>(sp.RequestSocket, SendType.Reply, FVMData.GetUserData(Convert.ToInt32(sp.GetSource<string>())) is null ? new UserData { UserID = -1 } : FVMData.GetUserData(Convert.ToInt32(sp.GetSource<string>())), "Null", sp.SourceID);
                     }
                     break;
                 case SendType.Object:

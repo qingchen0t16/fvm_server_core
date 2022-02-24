@@ -1,4 +1,4 @@
-﻿using FVMIO.Model;
+﻿using FVMIO_From_Standard2._0.Model;
 using System.Data;
 
 namespace FVMServerCore_Console.Core.Data
@@ -122,7 +122,7 @@ namespace FVMServerCore_Console.Core.Data
             string sql = $"SELECT Name FROM Sys_Create_NickName WHERE Name NOT IN (SELECT UserName FROM Data_User WHERE IsDelete = 'false') AND Sex = '{sex}' ORDER BY RAND() LIMIT 1";
             if (DBHelper.Instance.Operate("SystemData").GetDataSetLen(sql) == 0)
                 return "库中暂时没有新的昵称";
-            return DBHelper.Instance.Operate("SystemData").ExecuteQuery(sql).Tables[0].Rows[0][0].ToString();
+            return DBHelper.Instance.Operate("SystemData").ExecuteQuery(sql).Tables[0].Rows[0][0].ToString() ?? "库中暂时没有新的昵称";
         }
 
         /// <summary>
